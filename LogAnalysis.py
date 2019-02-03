@@ -2,8 +2,6 @@
 
 import psycopg2
 
-DBNAME = "news"
-
 
 def db_handler(function):
     """Handles database connection and operations for other functions."""
@@ -16,14 +14,17 @@ def db_handler(function):
 
 
 def get_popular_articles():
-    """Return the most poular three articles of all time."""
+    """Return the most popular three articles of all time."""
 
-    query = """SELECT articles.title, COUNT(*) as views
+    query = """SELECT articles.title, COUNT(*) AS views
                FROM articles, log
                WHERE log.path ILIKE '%' || articles.slug
                GROUP BY articles.title
                ORDER BY views desc
-               LIMIT 3"""
+               LIMIT 3;"""
     rows = db_handler(query)
     for row in rows:
-        print(row)
+        print('{} — {} views '.format(row[0], row[1]))
+
+
+get_popular_articles()
