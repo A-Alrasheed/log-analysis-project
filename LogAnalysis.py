@@ -2,4 +2,14 @@
 
 import psycopg2
 
-db = psycopg2.connect("dbname=news")
+DBNAME = "news"
+
+def db_handler(function):
+  """Handles database connection and operations for other functions."""
+  db = psycopg2.connect("dbname=news")
+  c = db.cursor()
+  c.execute(function)
+  result = c.fetchall()
+  db.close()
+  return result
+
